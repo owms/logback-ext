@@ -42,7 +42,6 @@ task resolveDependencies {
 subprojects {
     group = 'co.wrisk.logback'
     description = "Extensions for Logback logging library"
-    version = "1.0.2-SNAPSHOT"
 
     apply plugin: 'java'
     apply plugin: 'maven'
