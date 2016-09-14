@@ -9,9 +9,6 @@ dependencies:
 test:
   override:
     - ./gradlew build --console=plain
-  post:
-    - mkdir -p $CIRCLE_TEST_REPORTS/junit/
-    - cp -a ./build/test-results/* $CIRCLE_TEST_REPORTS/junit/
 
 deployment:
   prod:
