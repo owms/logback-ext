@@ -33,13 +33,13 @@ subprojects {
 
     apply plugin: 'java'
     apply plugin: 'maven'
+    apply plugin: 'maven-publish'
     apply plugin: 'signing'
 
 
     repositories {
-        jcenter()
+        mavenCentral()
     }
-
 
     compileJava {
         sourceCompatibility = 1.8
@@ -78,6 +78,25 @@ subprojects {
         sign configurations.archives
     }
 
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
+                artifact sourcesJar
+            }
+        }
+    }
+    publishing {
+        repositories {
+            maven {
+                url "s3://repo.wrisk.co/release"
+                credentials(AwsCredentials) {
+                    accessKey "${AWS_ACCESS_KEY_ID}"
+                    secretKey "${AWS_SECRET_ACCESS_KEY}"
+                }
+            }
+        }
+    }
 
     uploadArchives {
         repositories {
