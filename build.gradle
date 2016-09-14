@@ -29,13 +29,10 @@ task resolveDependencies {
 subprojects {
     group = 'co.wrisk.logback'
     description = "Extensions for Logback logging library"
-    def buildNumber = "${System.env.CI_BUILD_NUMBER ? System.env.CI_BUILD_NUMBER : 'manual'}"
-    def semanticVersion = "1.0.1-alpha"
-    version = "$semanticVersion.$buildNumber"
+    version = "1.0.2-SNAPSHOT"
 
     apply plugin: 'java'
     apply plugin: 'maven'
-    apply plugin: 'maven-publish'
     apply plugin: 'signing'
 
 
@@ -81,25 +78,6 @@ subprojects {
         sign configurations.archives
     }
 
-    publishing {
-        publications {
-            mavenJava(MavenPublication) {
-                from components.java
-                artifact sourceJar
-            }
-        }
-    }
-    publishing {
-        repositories {
-            maven {
-                url "s3://repo.wrisk.co/release"
-                credentials(AwsCredentials) {
-                    accessKey "${AWS_ACCESS_KEY_ID}"
-                    secretKey "${AWS_SECRET_ACCESS_KEY}"
-                }
-            }
-        }
-    }
 
     uploadArchives {
         repositories {
