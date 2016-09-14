@@ -4,6 +4,7 @@ Logback Extensions
 This is a fork of https://github.com/trautonen/logback-ext
 
 [![Build Status](https://circleci.com/gh/WriskHQ/logback-ext.svg?style=shield&circle-token=035569d22c22736f2f7f9cd1ed994231c14481be)](https://circleci.com/gh/WriskHQ/logback-ext)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/co.wrisk.logback/logback-ext-cloudwatch-appender/badge.svg)](https://maven-badges.herokuapp.com/maven-central/co.wrisk.logback/logback-ext-cloudwatch-appender/)
 ![License](https://img.shields.io/github/license/WriskHQ/logback-ext.svg?style=flat-square)
 
 Extensions for Logback logging library mainly for appenders aimed for Amazon Web Services,
