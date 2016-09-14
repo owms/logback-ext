@@ -81,12 +81,6 @@ subprojects {
 
     uploadArchives {
 
-        // add a configuration with a classpath that includes our s3 maven deployer
-        configurations { deployerJars }
-        dependencies {
-            deployerJars "org.springframework.build.aws:org.springframework.build.aws.maven:3.0.0.RELEASE"
-        }
-
         repositories {
             mavenDeployer {
                 beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
