@@ -10,11 +10,9 @@ ext {
 }
 
 subprojects {
-    group = 'co.wrisk'
+    group = 'co.wrisk.logback'
     description = "Extensions for Logback logging library"
-    def buildNumber = "${System.env.CI_BUILD_NUMBER ? System.env.CI_BUILD_NUMBER : 'manual'}"
-    def semanticVersion = "1.0.0"
-    version = "$semanticVersion.$buildNumber"
+    version = "1.0.0.1"
 
     apply plugin: 'java'
     apply plugin: 'maven-publish'

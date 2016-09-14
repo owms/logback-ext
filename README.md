@@ -1,6 +1,8 @@
 Logback Extensions
 ==================
 
+This is a fork of https://github.com/trautonen/logback-ext
+
 [![Build Status](https://img.shields.io/travis/trautonen/logback-ext.svg?style=flat-square)](https://travis-ci.org/trautonen/logback-ext)
 ![License](https://img.shields.io/github/license/trautonen/logback-ext.svg?style=flat-square)
 
