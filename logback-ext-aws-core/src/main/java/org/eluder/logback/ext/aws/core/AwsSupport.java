@@ -34,7 +34,7 @@ import com.amazonaws.auth.EnvironmentVariableCredentialsProvider;
 import com.amazonaws.auth.InstanceProfileCredentialsProvider;
 import com.amazonaws.auth.SystemPropertiesCredentialsProvider;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
-import com.amazonaws.internal.StaticCredentialsProvider;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
 
 public class AwsSupport {
 
@@ -46,7 +46,7 @@ public class AwsSupport {
         return new AWSCredentialsProviderChain(
                 new EnvironmentVariableCredentialsProvider(),
                 new SystemPropertiesCredentialsProvider(),
-                new StaticCredentialsProvider(credentials == null ? new NullCredentials() : credentials),
+                new AWSStaticCredentialsProvider(credentials == null ? new NullCredentials() : credentials),
                 new ProfileCredentialsProvider(),
                 new InstanceProfileCredentialsProvider()
         );
