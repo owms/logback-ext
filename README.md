@@ -14,7 +14,7 @@ encoder.
 
 ## Using Logback Extensions
 
-Logback Extensions requires Java 7 or newer. Include desired modules in your project's
+Logback Extensions requires Java 8 or newer. Include desired modules in your project's
 dependency management and configure the appenders or encoders using Logback's XML configutation
 or Java API.
 
@@ -51,5 +51,5 @@ secret keys are exposed if the server is compromised.
 
 ### Continuous Integration
 
-TravisCI builds the project with Oracle JDK 7 and 8. Builds created with Oracle JDK 7 are deployed
+CircleCI builds the project with Oracle JDK 8. Builds are deployed
 to Sonatype OSSRH.
