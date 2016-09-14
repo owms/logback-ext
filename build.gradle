@@ -13,15 +13,31 @@ ext {
     jmhVersion = '1.14'
 }
 
+task resolveDependencies {
+    doLast {
+        project.rootProject.allprojects.each { subProject ->
+            subProject.buildscript.configurations.each { configuration ->
+                configuration.resolve()
+            }
+            subProject.configurations.each { configuration ->
+                configuration.resolve()
+            }
+        }
+    }
+}
+
 subprojects {
     group = 'co.wrisk.logback'
     description = "Extensions for Logback logging library"
     def buildNumber = "${System.env.CI_BUILD_NUMBER ? System.env.CI_BUILD_NUMBER : 'manual'}"
-    def semanticVersion = "1.0.0"
+    def semanticVersion = "1.0.1-alpha"
     version = "$semanticVersion.$buildNumber"
 
     apply plugin: 'java'
+    apply plugin: 'maven'
     apply plugin: 'maven-publish'
+    apply plugin: 'signing'
+
 
     repositories {
         jcenter()
@@ -47,27 +63,24 @@ subprojects {
     }
 
 
-    task sourceJar(type: Jar, dependsOn: classes) {
+    task sourcesJar(type: Jar, dependsOn: classes) {
         classifier = 'sources'
         from sourceSets.main.allSource
     }
 
-    artifacts {
-        archives sourceJar
+    task javadocJar(type: Jar) {
+        classifier = 'javadoc'
+        from javadoc
     }
 
-    task resolveDependencies {
-        doLast {
-            project.rootProject.allprojects.each { subProject ->
-                subProject.buildscript.configurations.each { configuration ->
-                    configuration.resolve()
-                }
-                subProject.configurations.each { configuration ->
-                    configuration.resolve()
-                }
-            }
-        }
+    artifacts {
+        archives javadocJar, sourcesJar
     }
+
+    signing {
+        sign configurations.archives
+    }
+
     publishing {
         publications {
             mavenJava(MavenPublication) {
@@ -83,6 +96,51 @@ subprojects {
                 credentials(AwsCredentials) {
                     accessKey "${AWS_ACCESS_KEY_ID}"
                     secretKey "${AWS_SECRET_ACCESS_KEY}"
+                }
+            }
+        }
+    }
+
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                    authentication(userName: ossrhUsername, password: ossrhPassword)
+                }
+
+                snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                    authentication(userName: ossrhUsername, password: ossrhPassword)
+                }
+
+                pom.project {
+                    name 'Extensions for Logback logging library'
+                    packaging 'jar'
+                    // optionally artifactId can be defined here
+                    description 'Extensions for Logback logging library'
+                    url 'https://github.com/WriskHQ/logback-ext'
+
+                    scm {
+                        connection 'scm:git:git@github.com:WriskHQ/logback-ext.git'
+                        developerConnection 'scm:git:git@github.com:WriskHQ/logback-ext.git'
+                        url 'https://github.com/WriskHQ/logback-ext'
+                    }
+
+                    licenses {
+                        license {
+                            name 'The MIT License (MIT)'
+                            url 'https://raw.githubusercontent.com/WriskHQ/logback-ext/master/LICENSE'
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id 'aharin'
+                            name 'Alex Harin'
+                            email 'alex@wrisk.co'
+                        }
+                    }
                 }
             }
         }
