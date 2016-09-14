@@ -144,6 +144,12 @@ public abstract class AbstractCloudWatchAppender<E extends DeferredProcessingAwa
     }
 
     @Override
+    protected String convert(byte[] payload) {
+        String payloadAsString = super.convert(payload);
+        return payloadAsString == null ? null : payloadAsString.trim();
+    }
+
+    @Override
     protected void handle(final E event, final String encoded) throws Exception {
         CommonEventAttributes attributes = applyCommonEventAttributes(event);
         InputLogEvent ile = new InputLogEvent().withTimestamp(attributes.getTimeStamp()).withMessage(encoded);
