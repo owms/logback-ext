@@ -14,6 +14,7 @@ plugins {
 }
 
 apply plugin: 'net.researchgate.release'
+apply plugin: 'java'
 
 ext {
     logbackVersion = '1.1.7'
