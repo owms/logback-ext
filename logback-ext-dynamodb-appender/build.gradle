@@ -1,0 +1,8 @@
+dependencies {
+    compile "com.amazonaws:aws-java-sdk-dynamodb:$awsVersion"
+    compile project(":logback-ext-aws-core")
+    compile project(":logback-ext-jackson")
+}
+
+
+

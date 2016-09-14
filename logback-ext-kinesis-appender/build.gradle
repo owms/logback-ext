@@ -1,0 +1,7 @@
+dependencies {
+    compile "com.amazonaws:aws-java-sdk-kinesis:$awsVersion"
+    compile project(":logback-ext-aws-core")
+}
+
+
+

@@ -1,0 +1,13 @@
+dependencies {
+    compile "ch.qos.logback:logback-access:$logbackVersion"
+    compile "com.lmax:disruptor:$disruptorVersion"
+    compile "org.openjdk.jmh:jmh-core:$jmhVersion"
+    compile project(":logback-ext-core")
+
+    testCompile "junit:junit:$junitVersion"
+    testCompile "org.assertj:assertj-core:$assertjVersion"
+    testCompile "org.openjdk.jmh:jmh-generator-annprocess:$jmhVersion"
+}
+
+
+

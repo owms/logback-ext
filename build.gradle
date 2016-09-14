@@ -1,0 +1,96 @@
+ext {
+    logbackVersion = '1.1.7'
+    awsVersion = '1.11.33'
+    guavaVersion = '19.0'
+    jacksonVersion = '2.5.4'
+    junitVersion = '4.12'
+    assertjVersion = '3.5.2'
+    disruptorVersion = '3.3.2'
+    jmhVersion = '1.10.5'
+}
+
+subprojects {
+    group = 'co.wrisk'
+    description = "Extensions for Logback logging library"
+    def buildNumber = "${System.env.CI_BUILD_NUMBER ? System.env.CI_BUILD_NUMBER : 'manual'}"
+    def semanticVersion = "1.0.0"
+    version = "$semanticVersion.$buildNumber"
+
+    apply plugin: 'java'
+    apply plugin: 'maven-publish'
+
+    repositories {
+        jcenter()
+        mavenLocal()
+
+        maven {
+            url "s3://repo.wrisk.co/release"
+            credentials(AwsCredentials) {
+                accessKey "${AWS_ACCESS_KEY_ID}"
+                secretKey "${AWS_SECRET_ACCESS_KEY}"
+            }
+        }
+    }
+
+
+    compileJava {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+        options.deprecation = true
+    }
+
+    compileTestJava {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+        options.deprecation = true
+    }
+
+
+    dependencies {
+        compile "ch.qos.logback:logback-core:$logbackVersion"
+        compile "ch.qos.logback:logback-classic:$logbackVersion"
+    }
+
+
+    task sourceJar(type: Jar, dependsOn: classes) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+
+    artifacts {
+        archives sourceJar
+    }
+
+    task resolveDependencies {
+        doLast {
+            project.rootProject.allprojects.each { subProject ->
+                subProject.buildscript.configurations.each { configuration ->
+                    configuration.resolve()
+                }
+                subProject.configurations.each { configuration ->
+                    configuration.resolve()
+                }
+            }
+        }
+    }
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
+                artifact sourceJar
+            }
+        }
+    }
+    publishing {
+        repositories {
+            maven {
+                url "s3://repo.wrisk.co/release"
+                credentials(AwsCredentials) {
+                    accessKey "${AWS_ACCESS_KEY_ID}"
+                    secretKey "${AWS_SECRET_ACCESS_KEY}"
+                }
+            }
+        }
+    }
+
+}
