@@ -1,12 +1,16 @@
+plugins {
+    id 'com.github.ben-manes.versions' version '0.13.0'
+}
+
 ext {
     logbackVersion = '1.1.7'
-    awsVersion = '1.11.33'
+    awsVersion = '1.11.34'
     guavaVersion = '19.0'
-    jacksonVersion = '2.5.4'
+    jacksonVersion = '2.7.6'
     junitVersion = '4.12'
     assertjVersion = '3.5.2'
-    disruptorVersion = '3.3.2'
-    jmhVersion = '1.10.5'
+    disruptorVersion = '3.3.5'
+    jmhVersion = '1.14'
 }
 
 subprojects {
