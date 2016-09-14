@@ -1,3 +1,14 @@
+buildscript {
+    repositories {
+        maven {
+            url 'https://plugins.gradle.org/m2/'
+        }
+    }
+    dependencies {
+        classpath 'net.researchgate:gradle-release:2.4.0'
+    }
+}
+
 plugins {
     id 'com.github.ben-manes.versions' version '0.13.0'
 }
@@ -12,6 +23,8 @@ ext {
     disruptorVersion = '3.3.5'
     jmhVersion = '1.14'
 }
+
+
 
 task resolveDependencies {
     doLast {
@@ -34,6 +47,10 @@ subprojects {
     apply plugin: 'java'
     apply plugin: 'maven'
     apply plugin: 'signing'
+
+
+
+    apply plugin: 'net.researchgate.release'
 
 
     repositories {
@@ -79,6 +96,7 @@ subprojects {
         sign configurations.archives
     }
 
+    afterReleaseBuild.dependsOn uploadArchives
     uploadArchives {
 
         repositories {
