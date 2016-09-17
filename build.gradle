@@ -19,10 +19,6 @@ task build {
     dependsOn subprojects.findResults { it.tasks.findByName('build') }
 }
 
-release {
-    failOnCommitNeeded = false
-}
-
 task resolveDependencies {
     doLast {
         project.rootProject.allprojects.each { subProject ->
