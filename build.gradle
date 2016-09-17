@@ -19,7 +19,6 @@ task releaseBuild {
     dependsOn subprojects.findResults { it.tasks.findByName('build') }
 }
 
-//afterReleaseBuild.dependsOn uploadArchives
 release {
     buildTasks = ['releaseBuild']
     failOnCommitNeeded = false
@@ -88,7 +87,7 @@ subprojects {
         required { !version.contains("SNAPSHOT") }
         sign configurations.archives
     }
-
+    afterReleaseBuild.dependsOn uploadArchives
     uploadArchives {
 
         repositories {
