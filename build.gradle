@@ -1,12 +1,12 @@
 plugins {
     id 'com.github.ben-manes.versions' version '0.13.0'
-    id 'net.researchgate.release' version '2.3.3'
+    id 'net.researchgate.release' version '2.4.1'
 }
 
 
 ext {
     logbackVersion = '1.1.7'
-    awsVersion = '1.11.34'
+    awsVersion = '1.11.35'
     guavaVersion = '19.0'
     jacksonVersion = '2.7.6'
     junitVersion = '4.12'
@@ -15,12 +15,11 @@ ext {
     jmhVersion = '1.14'
 }
 
-task releaseBuild {
+task build {
     dependsOn subprojects.findResults { it.tasks.findByName('build') }
 }
 
 release {
-    buildTasks = ['releaseBuild']
     failOnCommitNeeded = false
 }
 
