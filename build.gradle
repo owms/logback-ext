@@ -1,5 +1,10 @@
 plugins {
     id 'com.github.ben-manes.versions' version '0.13.0'
+    id 'net.researchgate.release' version '2.3.2'
+}
+
+release {
+    versionPropertyFile = '../gradle.properties'
 }
 
 ext {
