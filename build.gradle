@@ -1,6 +1,6 @@
 plugins {
     id 'com.github.ben-manes.versions' version '0.13.0'
-    id 'net.researchgate.release' version '2.3.2'
+    id 'net.researchgate.release' version '2.3.3'
 }
 
 
@@ -15,12 +15,13 @@ ext {
     jmhVersion = '1.14'
 }
 
-task build {
+task releaseBuild {
     dependsOn subprojects.findResults { it.tasks.findByName('build') }
 }
 
 //afterReleaseBuild.dependsOn uploadArchives
 release {
+    buildTasks = ['releaseBuild']
     failOnCommitNeeded = false
 }
 
