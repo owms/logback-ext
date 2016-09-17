@@ -3,9 +3,6 @@ plugins {
     id 'net.researchgate.release' version '2.3.2'
 }
 
-release {
-    versionPropertyFile = '../gradle.properties'
-}
 
 ext {
     logbackVersion = '1.1.7'
@@ -16,6 +13,10 @@ ext {
     assertjVersion = '3.5.2'
     disruptorVersion = '3.3.5'
     jmhVersion = '1.14'
+}
+
+task build {
+    dependsOn subprojects.findResults { it.tasks.findByName('build') }
 }
 
 task resolveDependencies {
@@ -39,6 +40,9 @@ subprojects {
     apply plugin: 'maven'
     apply plugin: 'signing'
 
+    release {
+        versionPropertyFile = '../gradle.properties'
+    }
 
     repositories {
         mavenCentral()
