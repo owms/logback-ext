@@ -19,7 +19,10 @@ task build {
     dependsOn subprojects.findResults { it.tasks.findByName('build') }
 }
 
-afterReleaseBuild.dependsOn uploadArchives
+//afterReleaseBuild.dependsOn uploadArchives
+release {
+    failOnCommitNeeded = false
+}
 
 task resolveDependencies {
     doLast {
