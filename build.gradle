@@ -19,6 +19,8 @@ task build {
     dependsOn subprojects.findResults { it.tasks.findByName('build') }
 }
 
+afterReleaseBuild.dependsOn uploadArchives
+
 task resolveDependencies {
     doLast {
         project.rootProject.allprojects.each { subProject ->
