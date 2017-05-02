@@ -65,10 +65,8 @@ public class JacksonEncoderTest {
         fn.setLevel(FieldNames.IGNORE_NAME);
         encoder.setFieldNames(fn);
 
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        encoder.init(stream);
-        encoder.doEncode(createLoggingEvent("Hellö JSON!"));
-        String json = new String(stream.toByteArray(), "UTF-8");
+        byte[] bytes = encoder.encode(createLoggingEvent("Hellö JSON!"));
+        String json = new String(bytes, "UTF-8");
         assertNotNull(json);
     }
     

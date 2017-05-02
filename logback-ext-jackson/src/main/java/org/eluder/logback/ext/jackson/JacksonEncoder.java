@@ -56,10 +56,6 @@ public class JacksonEncoder extends ContextAwareBase implements CharacterEncoder
     private boolean newline;
     
     private boolean started;
-    private JsonWriter osWriter;
-    
-    private ByteArrayOutputStream baos;
-    private JsonWriter baosWriter;
 
     @Override
     public final void setCharset(Charset charset) {
@@ -118,36 +114,16 @@ public class JacksonEncoder extends ContextAwareBase implements CharacterEncoder
         throwableProxyConverter.stop();
     }
 
-    public void close() throws IOException {
+    @Override
+    public byte[] encode(ILoggingEvent event) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {
-            if (osWriter != null) {
-                osWriter.close();
-                osWriter = null;
-            }
-        } finally {
-            if (baosWriter != null) {
-                baosWriter.close();
-                baosWriter = null;
-            }
+            JsonWriter writer = new JsonWriter(baos, charset, getMapper());
+            write(event, writer);
+            return baos.toByteArray();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-    }
-    
-    public void init(OutputStream os) throws IOException {
-        try {
-            if (osWriter != null) {
-                osWriter.close();
-                osWriter = null;
-            }
-        } finally {
-            if (baosWriter != null) {
-                baosWriter.close();
-                baosWriter = null;
-            }
-        }
-
-        osWriter = new JsonWriter(os, charset, getMapper());
-        baos = new ByteArrayOutputStream();
-        baosWriter = new JsonWriter(baos, charset, getMapper());
     }
 
     private void write(ILoggingEvent event, JsonWriter writer) throws IOException {
@@ -164,21 +140,6 @@ public class JacksonEncoder extends ContextAwareBase implements CharacterEncoder
             w.newline();
         }
         w.flush();
-    }
-    
-    public void doEncode(ILoggingEvent event) throws IOException {
-        write(event, osWriter);
-    }
-    
-    @Override
-    public byte[] encode(ILoggingEvent event) {
-        try {
-            baos.reset();
-            write(event, baosWriter);
-            return baos.toByteArray();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     protected ObjectMapper getMapper() {
